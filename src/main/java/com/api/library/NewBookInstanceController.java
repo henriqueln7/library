@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
+import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.util.Optional;
 
@@ -20,6 +21,7 @@ public class NewBookInstanceController {
     }
 
     @PostMapping("/books/{bookIsbn}/instances")
+    @Transactional
     public void newBookInstance(@PathVariable("bookIsbn") String bookIsbn, @RequestBody @Valid NewInstanceBookRequest request) {
         Optional<Book> optionalBook = bookRepository.findByIsbn(bookIsbn);
         if (optionalBook.isPresent()) {
