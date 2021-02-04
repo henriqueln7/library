@@ -1,4 +1,4 @@
-package com.api.library;
+package com.api.library.domain;
 
 import org.hibernate.validator.constraints.ISBN;
 

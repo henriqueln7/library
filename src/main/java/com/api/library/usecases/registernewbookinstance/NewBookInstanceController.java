@@ -1,5 +1,7 @@
-package com.api.library;
+package com.api.library.usecases.registernewbookinstance;
 
+import com.api.library.domain.Book;
+import com.api.library.domain.BookRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;

@@ -1,5 +1,6 @@
-package com.api.library;
+package com.api.library.usecases.registernewbook;
 
+import com.api.library.domain.Book;
 import org.hibernate.validator.constraints.ISBN;
 
 import javax.validation.constraints.NotBlank;

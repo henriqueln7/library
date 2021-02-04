@@ -1,5 +1,8 @@
-package com.api.library;
+package com.api.library.usecases.registernewbookinstance;
 
+import com.api.library.domain.Book;
+import com.api.library.domain.BookInstance;
+import com.api.library.domain.CirculationType;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
