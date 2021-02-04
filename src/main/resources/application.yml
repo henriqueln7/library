@@ -8,4 +8,7 @@ spring:
   h2:
     console:
       enabled: true
-
+  jackson:
+    mapper:
+      accept-case-insensitive-enums: true
+      accept-case-insensitive-properties: true

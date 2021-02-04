@@ -2,14 +2,13 @@ package com.api.library;
 
 import org.hibernate.validator.constraints.ISBN;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Book {
@@ -23,7 +22,8 @@ public class Book {
     private String title;
     @NotNull @Positive
     private BigDecimal price;
-
+    @OneToMany(mappedBy = "book", cascade = CascadeType.MERGE)
+    private List<BookInstance> bookInstances = new ArrayList<>();
     @Deprecated
     protected Book(){}
 
@@ -33,8 +33,13 @@ public class Book {
         this.price = price;
     }
 
+    public void addBookInstance(NewInstanceBookRequest request) {
+        BookInstance newBookInstance = request.newBookInstance(this);
+        this.bookInstances.add(newBookInstance);
+    }
+
     @Override
     public String toString() {
-        return "Book{" + "id=" + id + ", isbn='" + isbn + '\'' + ", title='" + title + '\'' + ", price=" + price + '}';
+        return "Book{" + "id=" + id + ", isbn='" + isbn + '\'' + ", title='" + title + '\'' + ", price=" + price + ", bookInstances=" + bookInstances + '}';
     }
 }

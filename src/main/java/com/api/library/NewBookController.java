@@ -20,9 +20,8 @@ public class NewBookController {
     @PostMapping("/books")
     @Transactional
     @ResponseStatus(HttpStatus.CREATED)
-    public String newBook(@RequestBody @Valid NewBookRequest request) {
+    public void newBook(@RequestBody @Valid NewBookRequest request) {
         Book book = request.newBook();
         manager.persist(book);
-        return book.toString();
     }
 }
