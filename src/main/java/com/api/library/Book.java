@@ -9,6 +9,7 @@ import javax.validation.constraints.Positive;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
 
 @Entity
 public class Book {
@@ -23,7 +24,7 @@ public class Book {
     @NotNull @Positive
     private BigDecimal price;
     @OneToMany(mappedBy = "book", cascade = CascadeType.MERGE)
-    private List<BookInstance> bookInstances = new ArrayList<>();
+    private final List<BookInstance> bookInstances = new ArrayList<>();
     @Deprecated
     protected Book(){}
 
@@ -33,8 +34,8 @@ public class Book {
         this.price = price;
     }
 
-    public void addBookInstance(NewInstanceBookRequest request) {
-        BookInstance newBookInstance = request.newBookInstance(this);
+    public void addBookInstance(Function<Book, BookInstance> createBookInstance) {
+        BookInstance newBookInstance = createBookInstance.apply(this);
         this.bookInstances.add(newBookInstance);
     }
 

@@ -24,7 +24,7 @@ public class NewBookInstanceController {
         Optional<Book> optionalBook = bookRepository.findByIsbn(bookIsbn);
         if (optionalBook.isPresent()) {
             Book book = optionalBook.get();
-            book.addBookInstance(request);
+            book.addBookInstance(request::newBookInstance);
             bookRepository.save(book);
         } else {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Book with ISBN " + bookIsbn + " NOT FOUND");
