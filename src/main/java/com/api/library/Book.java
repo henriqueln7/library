@@ -17,6 +17,7 @@ public class Book {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @ISBN(type = ISBN.Type.ANY)
+    @NotNull
     private String isbn;
     @NotBlank
     private String title;
@@ -26,7 +27,7 @@ public class Book {
     @Deprecated
     protected Book(){}
 
-    public Book(@ISBN(type = ISBN.Type.ANY) String isbn, @NotBlank String title, @NotNull @Positive BigDecimal price) {
+    public Book(@ISBN(type = ISBN.Type.ANY) @NotNull String isbn, @NotBlank String title, @NotNull @Positive BigDecimal price) {
         this.isbn = isbn;
         this.title = title;
         this.price = price;

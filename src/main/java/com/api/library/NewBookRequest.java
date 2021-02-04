@@ -10,15 +10,16 @@ import javax.validation.constraints.Positive;
 import java.math.BigDecimal;
 
 public class NewBookRequest {
+    @NotNull
     @ISBN(type = ISBN.Type.ANY)
-    private final String isbn;
+    public final String isbn;
     @NotBlank
-    private final String title;
+    public final String title;
     @NotNull
     @Positive
-    private final BigDecimal price;
+    public final BigDecimal price;
 
-    public NewBookRequest(String isbn, String title, BigDecimal price) {
+    public NewBookRequest(@NotNull @ISBN(type = ISBN.Type.ANY) String isbn, @NotBlank String title, @NotNull @Positive BigDecimal price) {
         this.isbn = isbn;
         this.title = title;
         this.price = price;
