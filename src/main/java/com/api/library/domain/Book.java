@@ -18,6 +18,7 @@ public class Book {
     private Long id;
     @ISBN(type = ISBN.Type.ANY)
     @NotNull
+    @Column(unique = true)
     private String isbn;
     @NotBlank
     private String title;

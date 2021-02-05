@@ -15,6 +15,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.math.BigDecimal;
 import java.util.Map;
 
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -56,6 +57,26 @@ class NewBookControllerTest {
         mockMvc.perform(post("/books")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(mapper.writeValueAsString(request)))
+               .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    @DisplayName("It should return 400 if book with isbn passed already exists")
+    void itShouldReturn400IfBookWithIsbnPassedAlreadyExists() throws Exception {
+
+        String isbn = "978-85-510-0249-0";
+        Map<String, Object> request = Map.of("title", "Jogos Vorazes",
+                                             "price", 29.95,
+                                             "isbn", isbn);
+        Map<String, Object> requestDuplicateIsbn = Map.of("title", "Calculo",
+                                             "price", 30,
+                                             "isbn", isbn);
+
+        mockMvc.perform(post("/books").contentType(MediaType.APPLICATION_JSON).content(mapper.writeValueAsString(request))).andReturn();
+
+        mockMvc.perform(post("/books")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(mapper.writeValueAsString(requestDuplicateIsbn)))
                .andExpect(status().isBadRequest());
     }
 }
