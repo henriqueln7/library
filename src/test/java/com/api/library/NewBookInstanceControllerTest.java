@@ -3,6 +3,8 @@ package com.api.library;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -38,12 +40,12 @@ class NewBookInstanceControllerTest {
         mockMvc.perform(post("/books/{bookIsbn}/instances", isbn)
                             .contentType(APPLICATION_JSON)
                             .content(mapper.writeValueAsString(Map.of("circulationType", "RESTRICTED"))))
-               .andExpect(status().isOk());
+               .andExpect(status().isCreated());
 
         mockMvc.perform(post("/books/{bookIsbn}/instances", isbn)
                             .contentType(APPLICATION_JSON)
                             .content(mapper.writeValueAsString(Map.of("circulationType", "CIRCULATING"))))
-               .andExpect(status().isOk());
+               .andExpect(status().isCreated());
     }
 
     @Test
@@ -55,17 +57,13 @@ class NewBookInstanceControllerTest {
                .andExpect(status().isNotFound());
     }
 
-    @Test
+    @ParameterizedTest
+    @ValueSource(strings = {"", "CIRCULAAA"})
     @DisplayName("It should return 400 if circulationType is not valid")
-    void itShouldReturn400IfCirculationTypeIsNotValid() throws Exception {
+    void itShouldReturn400IfCirculationTypeIsNotValid(String circulationType) throws Exception {
         mockMvc.perform(post("/books/{bookIsbn}/instances", "11111")
                                 .contentType(APPLICATION_JSON)
-                                .content(mapper.writeValueAsString(Map.of("circulationType", ""))))
-               .andExpect(status().isBadRequest());
-
-        mockMvc.perform(post("/books/{bookIsbn}/instances", "11111")
-                                .contentType(APPLICATION_JSON)
-                                .content(mapper.writeValueAsString(Map.of("circulationType", "CIRCULAAA"))))
+                                .content(mapper.writeValueAsString(Map.of("circulationType", circulationType))))
                .andExpect(status().isBadRequest());
     }
 }
