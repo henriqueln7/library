@@ -10,6 +10,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Map;
 
+import static org.hamcrest.Matchers.is;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -42,12 +43,24 @@ class RegisterPatronControllerTest {
     }
 
     @Test
+    @DisplayName("It should return status 400 if no type is passed")
+    void itShouldReturnStatus400IfNoTypeIsPassed() throws Exception {
+        RegisterPatronRequest request = new RegisterPatronRequest(null);
+        mockMvc.perform(post("/patrons")
+                                .contentType(APPLICATION_JSON)
+                                .content(mapper.writeValueAsString(request))).
+                       andExpect(status().isBadRequest());
+
+    }
+
+    @Test
     @DisplayName("It should return a body with id and type of patron that was registered")
     void itShouldReturnABodyWithIdAndTypeOfPatronThatWasRegistered() throws Exception {
         mockMvc.perform(post("/patrons")
                                 .contentType(APPLICATION_JSON)
                                 .content(mapper.writeValueAsString(Map.of("type", "normal"))))
                .andExpect(jsonPath("$.id").isNumber())
+               .andExpect(jsonPath("$.type", is("NORMAL")))
                .andExpect(jsonPath("$.type").isString());
     }
 
