@@ -11,7 +11,7 @@ import javax.validation.constraints.Positive;
 import java.math.BigDecimal;
 
 public class NewBookRequest {
-    @NotNull
+    @NotBlank
     @ISBN(type = ISBN.Type.ANY)
     public final String isbn;
     @NotBlank
