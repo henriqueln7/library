@@ -22,10 +22,11 @@ public class RegisterPatronController {
     @PostMapping("/patrons")
     @Transactional
     @ResponseStatus(HttpStatus.CREATED)
-    public Map<String, Object> registerUser(@RequestBody @Valid RegisterPatronRequest request) {
+    public Map<String, Object> registerPatron(@RequestBody @Valid RegisterPatronRequest request) {
         Patron patron = new Patron(request.type);
         manager.persist(patron);
-        return Map.of("id", patron.getId(), "type", patron.getType());
+        return Map.of("id", patron.getId(),
+                      "type", patron.getType());
     }
 
 }
