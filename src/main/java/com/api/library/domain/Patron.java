@@ -31,4 +31,8 @@ public class Patron {
     public PatronType getType() {
         return this.type;
     }
+
+    public boolean researcher() {
+        return this.type.equals(PatronType.RESEARCHER);
+    }
 }

@@ -30,4 +30,12 @@ public class BookInstance {
     public String toString() {
         return "BookInstance{" + "id=" + id + ", circulationType=" + circulationType + '}';
     }
+
+    public boolean acceptToBeHoldTo(Patron patron) {
+        if (this.circulationType.equals(CirculationType.CIRCULATING)) {
+            return true;
+        }
+
+        return patron.researcher();
+    }
 }
