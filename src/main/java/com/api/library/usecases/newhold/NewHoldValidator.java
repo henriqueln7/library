@@ -39,10 +39,8 @@ public class NewHoldValidator implements Validator {
             errors.reject(null, "This book instance cannot be hold to this patron");
         }
 
-        if (request.getDaysHold().isEmpty()) {
-            if (!patron.researcher()) {
-                errors.rejectValue("daysHold", null, "You need to pass a daysHold attribute");
-            }
+        if (request.getDaysHold().isEmpty() && !patron.researcher()) {
+            errors.rejectValue("daysHold", null, "You need to pass a daysHold attribute");
         }
     }
 }
