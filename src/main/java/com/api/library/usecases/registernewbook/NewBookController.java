@@ -11,6 +11,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;
+import java.util.Map;
 
 @RestController
 public class NewBookController {
@@ -24,7 +25,7 @@ public class NewBookController {
     @PostMapping("/books")
     @Transactional
     @ResponseStatus(HttpStatus.CREATED)
-    public void newBook(@RequestBody @Valid NewBookRequest request) {
+    public Map<String, Object> newBook(@RequestBody @Valid NewBookRequest request) {
         boolean bookWithSameIsbnAlreadyExists = bookRepository.findByIsbn(request.isbn).isPresent();
 
         if (bookWithSameIsbnAlreadyExists) {
@@ -33,5 +34,6 @@ public class NewBookController {
 
         Book book = request.newBook();
         bookRepository.save(book);
+        return Map.of("id", book.getId(), "title", book.getTitle(), "isbn", book.getIsbn());
     }
 }

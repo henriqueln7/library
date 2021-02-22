@@ -8,6 +8,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -22,12 +23,13 @@ public class NewBookInstanceController {
     @PostMapping("/books/{bookIsbn}/instances")
     @Transactional
     @ResponseStatus(HttpStatus.CREATED)
-    public void newBookInstance(@PathVariable("bookIsbn") String bookIsbn, @RequestBody @Valid NewInstanceBookRequest request) {
+    public Map<String, Object> newBookInstance(@PathVariable("bookIsbn") String bookIsbn, @RequestBody @Valid NewInstanceBookRequest request) {
         Optional<Book> optionalBook = bookRepository.findByIsbn(bookIsbn);
         if (optionalBook.isPresent()) {
             Book book = optionalBook.get();
-            book.addBookInstance(request::newBookInstance);
+            book.addBookInstance(request.getCirculationType());
             bookRepository.save(book);
+            return Map.of("circulationType", request.getCirculationType());
         } else {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Book with ISBN " + bookIsbn + " NOT FOUND");
         }

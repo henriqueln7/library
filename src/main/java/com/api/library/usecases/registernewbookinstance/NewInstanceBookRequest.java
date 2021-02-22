@@ -23,7 +23,7 @@ public class NewInstanceBookRequest {
         return "NewInstanceBookRequest{" + "circulationType=" + circulationType + '}';
     }
 
-    public BookInstance newBookInstance(Book book) {
-        return new BookInstance(book, this.circulationType);
+    public CirculationType getCirculationType() {
+        return circulationType;
     }
 }
