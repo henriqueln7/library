@@ -45,6 +45,6 @@ public class Hold {
 
     public boolean current() {
         // Empréstimo corrente: não foi devolvido
-        return Optional.ofNullable(this.returnedAt).isPresent();
+        return Optional.ofNullable(this.returnedAt).isEmpty();
     }
 }
