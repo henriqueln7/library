@@ -1,7 +1,6 @@
 package com.api.library.domain;
 
-import com.api.library.domain.BookInstance;
-import com.api.library.domain.Patron;
+import org.springframework.util.Assert;
 
 import javax.persistence.*;
 import javax.validation.Valid;
@@ -9,6 +8,7 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import java.time.LocalDate;
+import java.util.Optional;
 
 @Entity
 public class Hold {
@@ -25,11 +25,13 @@ public class Hold {
     @Positive @Max(60)
     private Integer daysHold;
     private LocalDate createdAt;
+    private LocalDate returnedAt;
 
     @Deprecated
     protected Hold(){}
 
     public Hold(@NotNull @Valid Patron patron, @NotNull @Valid BookInstance bookInstance, @Positive @Max(60) Integer daysHold) {
+        Assert.isTrue(bookInstance.acceptToBeHoldTo(patron), "This book instance cannot be hold to this patron");
         this.patron = patron;
         this.bookInstance = bookInstance;
         this.daysHold = daysHold;
@@ -39,5 +41,10 @@ public class Hold {
     @Override
     public String toString() {
         return "Hold{" + "id=" + id + ", patron=" + patron + ", bookInstance=" + bookInstance + ", daysHold=" + daysHold + ", createdAt=" + createdAt + '}';
+    }
+
+    public boolean current() {
+        // Empréstimo corrente: não foi devolvido
+        return Optional.ofNullable(this.returnedAt).isPresent();
     }
 }

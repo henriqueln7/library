@@ -3,6 +3,8 @@ package com.api.library.domain;
 import javax.persistence.*;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class BookInstance {
@@ -17,6 +19,8 @@ public class BookInstance {
     @NotNull
     @Enumerated(EnumType.STRING)
     private CirculationType circulationType;
+    @OneToMany(mappedBy = "bookInstance")
+    private final List<Hold> holds = new ArrayList<>();
 
     @Deprecated
     protected BookInstance(){}
@@ -37,5 +41,10 @@ public class BookInstance {
         }
 
         return patron.researcher();
+    }
+
+    public boolean isAvailableToHold() {
+        // Tá disponível se não tiver sido emprestado ou se não há um empréstimo corrente ;)
+        return this.holds.isEmpty() || this.holds.stream().noneMatch(Hold::current);
     }
 }

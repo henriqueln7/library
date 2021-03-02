@@ -9,6 +9,7 @@ import org.springframework.validation.Validator;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.util.Objects;
 
 @Component
 public class NewHoldValidator implements Validator {
@@ -32,8 +33,8 @@ public class NewHoldValidator implements Validator {
         Patron patron = manager.find(Patron.class, request.getPatronId());
         BookInstance bookInstance = manager.find(BookInstance.class, request.getBookInstanceId());
 
-        Assert.state(patron != null, "Patron does not exists.");
-        Assert.state(bookInstance != null, "Book instance does not exists.");
+        Assert.state(Objects.nonNull(patron), "Patron does not exist");
+        Assert.state(Objects.nonNull(bookInstance), "BookInstance does not exist");
 
         if (!bookInstance.acceptToBeHoldTo(patron)) {
             errors.reject(null, "This book instance cannot be hold to this patron");
@@ -41,6 +42,10 @@ public class NewHoldValidator implements Validator {
 
         if (request.getDaysHold().isEmpty() && !patron.researcher()) {
             errors.rejectValue("daysHold", null, "You need to pass a daysHold attribute");
+        }
+
+        if (!bookInstance.isAvailableToHold()) {
+            errors.reject(null, "Book instance not available to be hold");
         }
     }
 }

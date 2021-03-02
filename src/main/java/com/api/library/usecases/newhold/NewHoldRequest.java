@@ -9,6 +9,7 @@ import javax.persistence.EntityManager;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
+import java.util.Objects;
 import java.util.Optional;
 
 public class NewHoldRequest {
@@ -47,8 +48,8 @@ public class NewHoldRequest {
         Patron patron = manager.find(Patron.class, this.patronId);
         BookInstance bookInstance = manager.find(BookInstance.class, this.bookInstanceId);
 
-        Assert.notNull(patron, "Patron does not exist");
-        Assert.notNull(bookInstance, "BookInstance does not exist");
+        Assert.state(Objects.nonNull(patron), "Patron does not exist");
+        Assert.state(Objects.nonNull(bookInstance), "BookInstance does not exist");
 
         int maxAmountDaysHold = 60;
         Integer amountOfDaysHold = Optional.ofNullable(this.daysHold).orElse(maxAmountDaysHold);
