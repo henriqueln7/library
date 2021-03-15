@@ -43,8 +43,17 @@ public class BookInstance {
         return patron.researcher();
     }
 
-    public boolean isAvailableToHold() {
+    public boolean isAvailableToHold(Patron patron) {
         // Tá disponível se não tiver sido emprestado ou se não há um empréstimo corrente ;)
-        return this.holds.isEmpty() || this.holds.stream().noneMatch(Hold::current);
+        return (this.holds.isEmpty() || this.holds.stream().noneMatch(Hold::current)) && patron.allowedToHold(this);
+    }
+
+    /**
+     * Compare two book instances, returning true if they are instances of the same book
+     * @param other Other book instance to compare
+     * @return true, if this instance and other are instances from same book. false otherwise
+     */
+    public boolean isInstanceOfSameBookAs(BookInstance other) {
+        return this.book.equals(other.book);
     }
 }

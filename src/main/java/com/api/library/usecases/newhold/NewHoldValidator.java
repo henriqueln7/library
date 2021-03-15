@@ -44,7 +44,7 @@ public class NewHoldValidator implements Validator {
             errors.rejectValue("daysHold", null, "You need to pass a daysHold attribute");
         }
 
-        if (!bookInstance.isAvailableToHold()) {
+        if (!bookInstance.isAvailableToHold(patron)) {
             errors.reject(null, "Book instance not available to be hold");
         }
     }

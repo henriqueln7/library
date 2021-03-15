@@ -3,10 +3,10 @@ package com.api.library.usecases.registernewbookinstance;
 import com.api.library.domain.Book;
 import com.api.library.domain.BookRepository;
 import org.springframework.http.HttpStatus;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
-import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.util.Map;
 import java.util.Optional;

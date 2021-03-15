@@ -47,4 +47,8 @@ public class Hold {
         // Empréstimo corrente: não foi devolvido
         return Optional.ofNullable(this.returnedAt).isEmpty();
     }
+
+    public BookInstance getBookInstance() {
+        return this.bookInstance;
+    }
 }
